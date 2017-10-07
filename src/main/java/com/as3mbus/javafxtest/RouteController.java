@@ -12,7 +12,7 @@ import javafx.scene.control.DatePicker;
 
 
 public class RouteController extends AnchorPane {
-    
+    Shipping ActiveShipment = new Shipping();
     @FXML
     TextField PoReceiptField;
     @FXML
