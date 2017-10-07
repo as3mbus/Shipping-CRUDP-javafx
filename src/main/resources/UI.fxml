@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="372.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <children>
+      <VBox layoutX="30.0" layoutY="40.0" prefHeight="174.0" prefWidth="185.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox VBox.vgrow="NEVER">
+               <children>
+                  <GridPane gridLinesVisible="true" prefHeight="275.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="106.0" prefWidth="463.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints percentHeight="15.0" vgrow="SOMETIMES" />
+                      <RowConstraints percentHeight="15.0" vgrow="SOMETIMES" />
+                      <RowConstraints percentHeight="15.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="48.0" minHeight="10.0" percentHeight="27.5" prefHeight="33.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="36.0" minHeight="10.0" percentHeight="27.5" prefHeight="36.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Group>
+                           <children>
+                              <Label text="Booking Number">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </Group>
+                        <Label text="Date" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <Label text="From" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <Label alignment="CENTER" text="Shipper" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <Label text="Consignee" GridPane.rowIndex="4" GridPane.valignment="TOP">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <Label text=":" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <Label text=": ABC123" GridPane.columnIndex="1">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <Group GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Label text=": 10/10/2017">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </Group>
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <Label text=":">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                              <TextField alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox layoutX="129.0" layoutY="100.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <Label text=":">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                              <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </children>
+            </HBox>
+            <Region VBox.vgrow="ALWAYS" />
+            <HBox alignment="BASELINE_RIGHT">
+               <children>
+                  <Button mnemonicParsing="false" text="Button" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

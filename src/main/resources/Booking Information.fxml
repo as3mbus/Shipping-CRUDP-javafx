@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <children>
+      <VBox layoutX="30.0" layoutY="40.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Booking Information">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Group>
+                     <children>
+                        <Label text="Booking Number">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </Group>
+                  <Label text="Date" GridPane.rowIndex="1">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <Label text="From" GridPane.rowIndex="2">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <Label alignment="CENTER" text="Shipper" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <Label text="Consignee" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="TOP">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <Label text=":">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="FromField">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox GridPane.columnIndex="1">
+                     <children>
+                        <Label text=":">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="BookingNumberLabel" layoutX="10.0" layoutY="10.0" text="ABC123" HBox.hgrow="ALWAYS">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Group GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label text=":">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="BookingDate" layoutX="10.0" layoutY="10.0" text="9/10/2017">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </Group>
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <Label text=":">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <VBox spacing="10.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <children>
+                              <TextField fx:id="ShipperName" />
+                              <TextArea fx:id="ShipperAddress" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="129.0" layoutY="100.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <children>
+                        <Label text=":">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <VBox spacing="10.0">
+                           <children>
+                              <TextField fx:id="ConsigneeName" />
+                              <TextArea fx:id="ConsigneeAddress" />
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+            <Region VBox.vgrow="ALWAYS" />
+            <Separator layoutX="10.0" layoutY="70.0" prefWidth="200.0" />
+            <HBox alignment="BASELINE_RIGHT">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#nextPage" text="Next" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</fx:root>
