@@ -5,7 +5,10 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.String;
 import java.lang.Thread.State;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -30,9 +33,16 @@ public class Shipment {
     public int VolumeCont;
     public LocalDate BookingDate, VesselETD, VesselETA, IVesselETD, IVesselETA, DischargeETA, StuffingDate;
 
+    static final String JDBC_DRIVER = "org.h2.Driver";
+    static final String DB_URL = "jdbc:h2:tcp://localhost/~/seaport";
+
+    //  Database credentials
+    static final String USER = "sa";
+    static final String PASS = "";
+
     public enum CargoSize {
         Twenty("20'"), Forty("40'");
-        private final String name;
+        public final String name;
 
         private CargoSize(String s) {
             name = s;
@@ -43,9 +53,6 @@ public class Shipment {
             return name.equals(otherName);
         }
 
-        public String toString() {
-            return this.name;
-        }
 
     };
 
@@ -162,6 +169,71 @@ public class Shipment {
             //TODO: handle exception
         }
 
+    }
+
+    public void insertDatabase() {
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+            Class.forName(JDBC_DRIVER);
+            System.out.println("Connecting to a selected database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected database successfully...");
+            System.out.println("Inserting records into the table...");
+            stmt = conn.createStatement();
+            String sql = "INSERT INTO SHIPMENT "
+                    + "VALUES (  '" + this.bookingNumber
+                    + "' , '" + this.BookingDate
+                    + "' , '"+this.From
+                    + "' , '"+this.ShipperName
+                    + "' , '"+this.ShipperAddress
+                    + "' , '"+this.ConsigneeName
+                    + "' , '"+this.ConsigneeAddress
+                    + "' , '"+this.PlaceOfReceipt
+                    + "' , '"+this.PortOfLoading
+                    + "' , '"+this.VesselOrVoyage
+                    + "' , '"+this.VesselETD
+                    + "' , '"+this.VesselETA
+                    + "' , '"+this.TransShipmentPort 
+                    + "' , '"+this.IntendedVesserlOrVoyage
+                    + "' , '"+this.IVesselETD
+                    + "' , '"+this.IVesselETA
+                    + "' , '"+this.PortOfDischarge
+                    + "' , '"+this.DischargeETA
+                    + "' , '"+this.FinalDestination
+                    + "' , '"+this.CargoSize
+                    + "' , '"+this.CargoType
+                    + "' ,  "+this.VolumeCont
+                    + "  , '"+this.Commodity
+                    + "' , '"+this.Freight
+                    + "' , '"+this.StuffingPlace
+                    + "' , '"+this.StuffingDate+"');";
+            stmt.executeUpdate(sql);
+
+            System.out.println("Inserted records into the table...");
+            
+            } catch (SQLException se) {
+                //Handle errors for JDBC
+                se.printStackTrace();
+            } catch (Exception e) {
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            } finally {
+                //finally block used to close resources
+                try {
+                    if (stmt!=null)
+                        conn.close();
+                } catch (SQLException se) {
+                } // do nothing
+                try {
+                    if (conn!=null)
+                        conn.close();
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                } //end finally try
+            } //end try
+            
     }
 
     public void previewFile(String path) {

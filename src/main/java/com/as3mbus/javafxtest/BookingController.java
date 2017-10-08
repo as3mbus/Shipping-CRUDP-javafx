@@ -36,6 +36,7 @@ public class BookingController extends AnchorPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        BookingNumberLabel.setText("SMG001");
         LocalDate Today = LocalDate.now();
         BookingDateLabel.setText(""+Today.getDayOfMonth()+"/"+Today.getMonth().toString()+"/"+Today.getYear());
     }
