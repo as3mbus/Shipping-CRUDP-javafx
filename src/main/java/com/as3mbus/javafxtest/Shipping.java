@@ -16,7 +16,7 @@ public class Shipping {
             PortOfLoading, VesselOrVoyage, TransShipmentPort, IntendedVesserlOrVoyage, PortOfDischarge,
             FinalDestination, VolumeCount, Commodity, StuffingPlace;
 
-    public LocalDate BookingDate, VesselOTD, VesselOTA, IVesselOTD, IVesselOTA, DischargeETA, StuffingDate;
+    public LocalDate BookingDate, VesselETD, VesselETA, IVesselETD, IVesselETA, DischargeETA, StuffingDate;
 
     public enum CargoSize {
         Twenty, Forty
@@ -42,6 +42,16 @@ public class Shipping {
         final DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MMMMM/yyyy");
         final LocalDate dt = dtf.parseLocalDate(s);
         return dt;
+    }
+    public static LocalDate parseBasicDateString(String s){
+        final DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
+        final LocalDate dt = dtf.parseLocalDate(s);
+        return dt;
+    }
+    public static String DateString(LocalDate ld){
+        final DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MMMM/yyyy");
+        final String s = ld.toString(dtf);
+        return s;
     }
 
     public Shipping() {

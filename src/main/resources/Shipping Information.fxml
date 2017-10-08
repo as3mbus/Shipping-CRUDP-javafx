@@ -17,9 +17,9 @@
    <children>
       <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox>
+            <HBox spacing="10.0">
                <children>
-                  <Label text="Data Pengiriman">
+                  <Label text="Shipping Information">
                      <font>
                         <Font size="25.0" />
                      </font>

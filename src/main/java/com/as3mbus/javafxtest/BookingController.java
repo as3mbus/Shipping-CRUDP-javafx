@@ -50,21 +50,33 @@ public class BookingController extends AnchorPane {
         }
         ActiveShipment = Shipment;
     }
+    public void LoadShipment(Shipping shipping){
+        ActiveShipment = shipping;
+        BookingNumberLabel.setText(shipping.bookingNumber);
+        BookingDateLabel.setText(Shipping.DateString(shipping.BookingDate));
+        FromField.setText(shipping.From);
+        ShipperName.setText(shipping.ShipperName);
+        ShipperAddress.setText(shipping.ShipperAddress);
+        ConsigneeName.setText(shipping.ConsigneeName);
+        ConsigneeAddress.setText(shipping.ConsigneeAddress);
+    }
+    public void SaveShipment(Shipping shipment){
+        shipment.bookingNumber = BookingNumberLabel.getText();
+        shipment.BookingDate =Shipping.parseDateString(BookingDateLabel.getText());
+        shipment.From = FromField.getText();
+        shipment.ShipperName = ShipperName.getText();
+        shipment.ShipperAddress = ShipperAddress.getText();
+        shipment.ConsigneeName = ConsigneeName.getText();
+        shipment.ConsigneeAddress = ConsigneeAddress.getText();
+        
+    }
 
     @FXML
     private void nextPage() {
 
         Stage stage = (Stage) this.getScene().getWindow();
-        ActiveShipment.bookingNumber = BookingNumberLabel.getText();
-        ActiveShipment.BookingDate =Shipping.parseDateString(BookingDateLabel.getText());
-        ActiveShipment.From = FromField.getText();
-        ActiveShipment.ShipperName = ShipperName.getText();
-        ActiveShipment.ShipperAddress = ShipperAddress.getText();
-        ActiveShipment.ConsigneeName = ConsigneeName.getText();
-        ActiveShipment.ConsigneeAddress = ConsigneeAddress.getText();
         System.out.println(ActiveShipment.BookingInformation());
-        RouteController route = new RouteController();
-        route.PoReceiptField.setText("Testing");
+        RouteController route = new RouteController(ActiveShipment);
         stage.setScene(new Scene(route));
 
     }
