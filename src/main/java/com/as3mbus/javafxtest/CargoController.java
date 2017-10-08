@@ -142,6 +142,7 @@ public class CargoController extends AnchorPane {
     @FXML
     private void Done() {
         saveShipment(ActiveShipment);
+        ActiveShipment.printIText();
     }
 
     public static String getSelectedRadioText(ToggleGroup group) {
