@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.io.IOException;
 
 public class BookingController extends AnchorPane {
-    Shipping ActiveShipment = new Shipping();
+    Shipment ActiveShipment = new Shipment();
     @FXML
     private Label BookingDateLabel;
     @FXML
@@ -39,43 +39,36 @@ public class BookingController extends AnchorPane {
         LocalDate Today = LocalDate.now();
         BookingDateLabel.setText(""+Today.getDayOfMonth()+"/"+Today.getMonth().toString()+"/"+Today.getYear());
     }
-    public BookingController(Shipping Shipment) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Booking Information.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-        ActiveShipment = Shipment;
+    public BookingController(Shipment Shipment) {
+        this();
+        LoadShipment(Shipment);
     }
-    public void LoadShipment(Shipping shipping){
+    public void LoadShipment(Shipment shipping){
         ActiveShipment = shipping;
         BookingNumberLabel.setText(shipping.bookingNumber);
-        BookingDateLabel.setText(Shipping.DateString(shipping.BookingDate));
+        BookingDateLabel.setText(Shipment.DateString(shipping.BookingDate));
         FromField.setText(shipping.From);
         ShipperName.setText(shipping.ShipperName);
         ShipperAddress.setText(shipping.ShipperAddress);
         ConsigneeName.setText(shipping.ConsigneeName);
         ConsigneeAddress.setText(shipping.ConsigneeAddress);
     }
-    public void SaveShipment(Shipping shipment){
+    public void SaveShipment(Shipment shipment){
         shipment.bookingNumber = BookingNumberLabel.getText();
-        shipment.BookingDate =Shipping.parseDateString(BookingDateLabel.getText());
+        shipment.BookingDate =Shipment.parseDateString(BookingDateLabel.getText());
         shipment.From = FromField.getText();
         shipment.ShipperName = ShipperName.getText();
         shipment.ShipperAddress = ShipperAddress.getText();
         shipment.ConsigneeName = ConsigneeName.getText();
         shipment.ConsigneeAddress = ConsigneeAddress.getText();
+        System.out.println(shipment.toString());
         
     }
 
     @FXML
     private void nextPage() {
-
+        SaveShipment(ActiveShipment);
         Stage stage = (Stage) this.getScene().getWindow();
-        System.out.println(ActiveShipment.BookingInformation());
         RouteController route = new RouteController(ActiveShipment);
         stage.setScene(new Scene(route));
 

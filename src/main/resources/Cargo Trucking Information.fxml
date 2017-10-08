@@ -159,7 +159,7 @@
                         </Label>
                         <VBox spacing="10.0">
                            <children>
-                              <RadioButton mnemonicParsing="false" text="Colect">
+                              <RadioButton mnemonicParsing="false" text="Collect">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="freight" />
                                  </toggleGroup>
@@ -179,7 +179,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <TextField>
+                        <TextField fx:id="VolumeContField">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -193,7 +193,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <TextArea>
+                        <TextArea fx:id="CommodityArea">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -207,7 +207,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <TextField>
+                        <TextField fx:id="StuffingPlaceField">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -221,7 +221,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </Label>
-                        <DatePicker>
+                        <DatePicker fx:id="StuffingDatePicker">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -236,7 +236,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#prevPage" text="Back" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" text="Finish" />
+                  <Button mnemonicParsing="false" onAction="#Done" text="Finish" />
                </children>
             </HBox>
          </children>
