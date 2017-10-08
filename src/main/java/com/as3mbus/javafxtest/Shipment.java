@@ -11,15 +11,14 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-
-
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
-
+import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.property.TextAlignment;
 
 /**
  * Shipment
@@ -76,12 +75,12 @@ public class Shipment {
                 + "VesselETD : " + this.VesselETD + "\n" + "Vessel ETA : " + this.VesselETA + "\n"
                 + "TransShipment Port : " + this.TransShipmentPort + "\n" + "Intended Vessel/Voyage : "
                 + this.IntendedVesserlOrVoyage + "\n" + "Intended Vessel ETA : " + this.IVesselETA + "\n"
-                + "Intended Vessel ETD : " + this.IVesselETD + "\n" + "Intended Vessel ETA : " + this.IVesselETA + "\n"
-                + "Port Of Discharge : " + this.PortOfDischarge + "\n" + "Discharge ETA: " + this.DischargeETA + "\n"
-                + "Final Destination : " + this.FinalDestination + "\n" + "Cargo Size : " + this.CargoSize + "\n"
-                + "Cargo Type : " + this.CargoType + "\n" + "Volume Content : " + this.VolumeCont + "\n"
-                + "Commodity : " + this.Commodity + "\n" + "Freight : " + this.Freight + "\n" + "Sruffing Place : "
-                + this.StuffingPlace + "\n" + "StuffingDate : " + this.StuffingDate;
+                + "Intended Vessel ETD : " + this.IVesselETD + "\n" + "Port Of Discharge : " + this.PortOfDischarge
+                + "\n" + "Discharge ETA: " + this.DischargeETA + "\n" + "Final Destination : " + this.FinalDestination
+                + "\n" + "Cargo Size : " + this.CargoSize + "\n" + "Cargo Type : " + this.CargoType + "\n"
+                + "Volume Content : " + this.VolumeCont + "\n" + "Commodity : " + this.Commodity + "\n" + "Freight : "
+                + this.Freight + "\n" + "Sruffing Place : " + this.StuffingPlace + "\n" + "StuffingDate : "
+                + this.StuffingDate;
     }
 
     public static LocalDate parseDateString(String s) {
@@ -106,8 +105,8 @@ public class Shipment {
 
     }
 
-    public void viewPdf(){
-        
+    public void viewPdf() {
+
     }
 
     public void printIText() {
@@ -118,6 +117,10 @@ public class Shipment {
             System.out.println(temp.getAbsolutePath());
             PdfDocument pdfDoc = new PdfDocument(new PdfWriter(temp.getAbsolutePath()));
             Document doc = new Document(pdfDoc);
+
+            doc.setTextAlignment(TextAlignment.CENTER);
+            doc.add(new Paragraph().add(new Text("Shipping Instruction").setFontSize(28)));
+            doc.setTextAlignment(TextAlignment.JUSTIFIED);
             Table table = new Table(4);
             Cell cell = new Cell(2, 2).add("Shipper : \n\t" + ShipperName + "\n\t" + ShipperAddress);
             table.addCell(cell);
@@ -125,35 +128,35 @@ public class Shipment {
             table.addCell(cell);
             cell = new Cell(3, 2).add("Logo Here");
             table.addCell(cell);
-            cell = new Cell(1,2).add("Consignee : \n\t" + ConsigneeName + "\n\t" + ConsigneeAddress);
+            cell = new Cell(1, 2).add("Consignee : \n\t" + ConsigneeName + "\n\t" + ConsigneeAddress);
             table.addCell(cell);
-            cell = new Cell(1,2).add("Notify Party : \n\t" + From);
+            cell = new Cell(1, 2).add("Notify Party : \n\t" + From);
             table.addCell(cell);
             cell = new Cell().add("Vessel : \n\t" + VesselOrVoyage);
+            table.addCell(cell);
+            cell = new Cell().add("ETD : \n\t" + VesselETD);
             table.addCell(cell);
             cell = new Cell().add("Port Of Loading : \n\t" + PortOfLoading);
             table.addCell(cell);
             cell = new Cell().add("Place Of Receipt : \n\t" + PlaceOfReceipt);
             table.addCell(cell);
-            cell = new Cell().add("???" );
+            cell = new Cell().add("Intended Vessel : \n\t" + IntendedVesserlOrVoyage);
             table.addCell(cell);
-            cell = new Cell().add("Port Of Discharge : \n\t" + PortOfDischarge );
+            cell = new Cell().add("ETA : \n\t" + VesselETA);
             table.addCell(cell);
-            cell = new Cell().add("Final Destination : \n\t" + FinalDestination );
+            cell = new Cell().add("Port Of Discharge : \n\t" + PortOfDischarge);
             table.addCell(cell);
-            cell = new Cell().add("????");
+            cell = new Cell().add("Final Destination : \n\t" + FinalDestination);
             table.addCell(cell);
-            cell = new Cell().add("????");
+            cell = new Cell(1, 4).add("Commodity : \n\t" + Commodity + "\n" + VolumeCont + " x " + CargoSize + " "
+                    + CargoType + "\n *** Freight " + Freight + " ***");
             table.addCell(cell);
-            cell = new Cell(1,4).add("Commodity : \n\t"+Commodity+"\n"+VolumeCont+" x "+CargoSize.toString()+" "+CargoType.name()+"\n *** Freight "+Freight.name()+" ***");
+            cell = new Cell(1, 4).add("Stuffing Place : \n\t" + StuffingPlace);
             table.addCell(cell);
-            cell = new Cell(1,4).add("Stuffing Place : \n\t"+StuffingPlace);
-            table.addCell(cell);
-            cell = new Cell(1,4).add("Booking Date : \n\t"+BookingDate);
+            cell = new Cell(1, 4).add("Booking Date : \n\t" + BookingDate);
             table.addCell(cell);
             doc.add(table);
             doc.close();
-            
 
         } catch (Exception e) {
             //TODO: handle exception
