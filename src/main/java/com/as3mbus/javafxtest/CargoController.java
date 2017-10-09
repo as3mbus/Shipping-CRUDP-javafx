@@ -93,10 +93,10 @@ public class CargoController extends AnchorPane {
         try {
 
             if (shipment.CargoSize.name() == CargoSize.Twenty.name())
-                setToggleGroup(size, CargoSize.Twenty.toString());
+                setToggleGroup(size, CargoSize.Twenty.name);
 
             else
-                setToggleGroup(size, CargoSize.Forty.toString());
+                setToggleGroup(size, CargoSize.Forty.name);
 
         } catch (Exception e) {
             //TODO: handle exception

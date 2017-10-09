@@ -1,20 +1,15 @@
 package com.as3mbus.javafxtest;
 
 import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.lang.String;
-import java.lang.Thread.State;
-import java.sql.Connection;
+import java.io.File;import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import org.joda.time.DateTime;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import com.itextpdf.kernel.pdf.PdfDocument;
+import org.joda.time.format.DateTimeFormatter;import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
@@ -40,7 +35,7 @@ public class Shipment {
     static final String USER = "sa";
     static final String PASS = "";
 
-    public enum CargoSize {
+    public static enum CargoSize {
         Twenty("20'"), Forty("40'");
         public final String name;
 
@@ -52,7 +47,6 @@ public class Shipment {
             // (otherName == null) check is not needed because name.equals(null) returns false 
             return name.equals(otherName);
         }
-
 
     };
 
@@ -110,6 +104,10 @@ public class Shipment {
 
     public Shipment() {
 
+    }
+
+    public Shipment(String ID) {
+        selectIDDatabase(ID);
     }
 
     public void viewPdf() {
@@ -173,7 +171,7 @@ public class Shipment {
 
     public void insertDatabase() {
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
 
         try {
             Class.forName(JDBC_DRIVER);
@@ -181,59 +179,125 @@ public class Shipment {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Connected database successfully...");
             System.out.println("Inserting records into the table...");
-            stmt = conn.createStatement();
-            String sql = "INSERT INTO SHIPMENT "
-                    + "VALUES (  '" + this.bookingNumber
-                    + "' , '" + this.BookingDate
-                    + "' , '"+this.From
-                    + "' , '"+this.ShipperName
-                    + "' , '"+this.ShipperAddress
-                    + "' , '"+this.ConsigneeName
-                    + "' , '"+this.ConsigneeAddress
-                    + "' , '"+this.PlaceOfReceipt
-                    + "' , '"+this.PortOfLoading
-                    + "' , '"+this.VesselOrVoyage
-                    + "' , '"+this.VesselETD
-                    + "' , '"+this.VesselETA
-                    + "' , '"+this.TransShipmentPort 
-                    + "' , '"+this.IntendedVesserlOrVoyage
-                    + "' , '"+this.IVesselETD
-                    + "' , '"+this.IVesselETA
-                    + "' , '"+this.PortOfDischarge
-                    + "' , '"+this.DischargeETA
-                    + "' , '"+this.FinalDestination
-                    + "' , '"+this.CargoSize
-                    + "' , '"+this.CargoType
-                    + "' ,  "+this.VolumeCont
-                    + "  , '"+this.Commodity
-                    + "' , '"+this.Freight
-                    + "' , '"+this.StuffingPlace
-                    + "' , '"+this.StuffingDate+"');";
-            stmt.executeUpdate(sql);
+            String sql = "INSERT INTO SHIPMENT " + "VALUES (  ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? );";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1,this.bookingNumber);
+            stmt.setDate(2,Date.valueOf(this.BookingDate.toString()));
+            stmt.setString(3, this.From);
+            stmt.setString(4, this.ShipperName);
+            stmt.setString(5, this.ShipperAddress);
+            stmt.setString(6, this.ConsigneeName);
+            stmt.setString(7, this.ConsigneeAddress);
+            stmt.setString(8, this.PlaceOfReceipt);
+            stmt.setString(9, this.PortOfLoading);
+            stmt.setString(10, this.VesselOrVoyage);
+            stmt.setDate(11,Date.valueOf(this.VesselETD.toString()));
+            stmt.setDate(12,Date.valueOf(this.VesselETA.toString()));
+            stmt.setString(13, this.TransShipmentPort);
+            stmt.setString(14, this.IntendedVesserlOrVoyage);
+            stmt.setDate(15,Date.valueOf(this.IVesselETA.toString()));
+            stmt.setDate(16,Date.valueOf(this.IVesselETD.toString()));
+            stmt.setString(17, this.PortOfDischarge);
+            stmt.setDate(18,Date.valueOf(this.DischargeETA.toString()));
+            stmt.setString(19, this.FinalDestination);
+            stmt.setString(20, this.CargoSize.toString().toUpperCase());
+            stmt.setString(21, this.CargoType.toString().toUpperCase());
+            stmt.setInt(22, this.VolumeCont);
+            stmt.setString(23, this.Commodity);
+            stmt.setString(24, this.Freight.toString().toUpperCase());
+            stmt.setString(25, this.StuffingPlace);
+            stmt.setDate(26,Date.valueOf(this.StuffingDate.toString()));
+
+
+            stmt.executeUpdate();
 
             System.out.println("Inserted records into the table...");
-            
+
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try {
+                if (stmt != null)
+                    conn.close();
             } catch (SQLException se) {
-                //Handle errors for JDBC
+            } // do nothing
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
                 se.printStackTrace();
-            } catch (Exception e) {
-                //Handle errors for Class.forName
-                e.printStackTrace();
-            } finally {
-                //finally block used to close resources
-                try {
-                    if (stmt!=null)
-                        conn.close();
-                } catch (SQLException se) {
-                } // do nothing
-                try {
-                    if (conn!=null)
-                        conn.close();
-                } catch (SQLException se) {
-                    se.printStackTrace();
-                } //end finally try
-            } //end try
-            
+            } //end finally try
+        } //end try
+
+    }
+
+    public void selectIDDatabase(String ID) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            Class.forName(JDBC_DRIVER);
+            System.out.println("Connecting to a selected database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected database successfully...");
+            System.out.println("Inserting records into the table...");
+            stmt = conn.prepareStatement("SELECT * FROM SHIPMENT WHERE BOOKINGID = ?");
+            stmt.setString(1, ID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                this.bookingNumber = rs.getString(1);
+                this.BookingDate = LocalDate.fromDateFields(rs.getDate(2));
+                this.From = rs.getString(3);
+                this.ShipperName = rs.getString(4);
+                this.ShipperAddress = rs.getString(5);
+                this.ConsigneeName = rs.getString(6);
+                this.ConsigneeAddress = rs.getString(7);
+                this.PlaceOfReceipt = rs.getString(8);
+                this.PortOfLoading = rs.getString(9);
+                this.VesselOrVoyage = rs.getString(10);
+                this.VesselETD = LocalDate.fromDateFields(rs.getDate(11));
+                this.VesselETA = LocalDate.fromDateFields(rs.getDate(12));
+                this.TransShipmentPort = rs.getString(13);
+                this.IntendedVesserlOrVoyage = rs.getString(14);
+                this.IVesselETA = LocalDate.fromDateFields(rs.getDate(15));
+                this.IVesselETD = LocalDate.fromDateFields(rs.getDate(16));
+                this.PortOfDischarge = rs.getString(17);
+                this.DischargeETA = LocalDate.fromDateFields(rs.getDate(18));
+                this.FinalDestination = rs.getString(19);
+                this.CargoSize = rs.getString(20).equalsIgnoreCase("twenty") ? CargoSize.Twenty : CargoSize.Forty;
+                this.CargoType = CargoType.valueOf(rs.getString(21));
+                this.VolumeCont = rs.getInt(22);
+                this.Commodity = rs.getString(23);
+                this.Freight = Freight.valueOf(StringUtils.capitalize(rs.getString(24).toLowerCase()));
+                this.StuffingPlace = rs.getString(25);
+                this.StuffingDate = LocalDate.fromDateFields(rs.getDate(26));
+            }
+
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try {
+                if (stmt != null)
+                    conn.close();
+            } catch (SQLException se) {
+            } // do nothing
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } //end finally try
+        } //end try
     }
 
     public void previewFile(String path) {

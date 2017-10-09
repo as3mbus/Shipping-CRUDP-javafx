@@ -27,6 +27,7 @@ public class BookingController extends AnchorPane {
     private TextField ConsigneeName;
     @FXML
     private TextArea ConsigneeAddress;
+
     public BookingController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Booking Information.fxml"));
         fxmlLoader.setRoot(this);
@@ -36,34 +37,42 @@ public class BookingController extends AnchorPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        BookingNumberLabel.setText("SMG001");
+        BookingNumberLabel.setText("SMG002");
         LocalDate Today = LocalDate.now();
-        BookingDateLabel.setText(""+Today.getDayOfMonth()+"/"+Today.getMonth().toString()+"/"+Today.getYear());
+        BookingDateLabel
+                .setText("" + Today.getDayOfMonth() + "/" + Today.getMonth().toString() + "/" + Today.getYear());
     }
+
     public BookingController(Shipment Shipment) {
         this();
         LoadShipment(Shipment);
     }
-    public void LoadShipment(Shipment shipping){
+
+    public void LoadShipment(Shipment shipping) {
         ActiveShipment = shipping;
         BookingNumberLabel.setText(shipping.bookingNumber);
-        BookingDateLabel.setText(Shipment.DateString(shipping.BookingDate));
+        try {
+            BookingDateLabel.setText(Shipment.DateString(shipping.BookingDate));
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
         FromField.setText(shipping.From);
         ShipperName.setText(shipping.ShipperName);
         ShipperAddress.setText(shipping.ShipperAddress);
         ConsigneeName.setText(shipping.ConsigneeName);
         ConsigneeAddress.setText(shipping.ConsigneeAddress);
     }
-    public void SaveShipment(Shipment shipment){
+
+    public void SaveShipment(Shipment shipment) {
         shipment.bookingNumber = BookingNumberLabel.getText();
-        shipment.BookingDate =Shipment.parseDateString(BookingDateLabel.getText());
+        shipment.BookingDate = Shipment.parseDateString(BookingDateLabel.getText());
         shipment.From = FromField.getText();
         shipment.ShipperName = ShipperName.getText();
         shipment.ShipperAddress = ShipperAddress.getText();
         shipment.ConsigneeName = ConsigneeName.getText();
         shipment.ConsigneeAddress = ConsigneeAddress.getText();
         System.out.println(shipment.toString());
-        
+
     }
 
     @FXML
