@@ -16,7 +16,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        bookControl =  new BookingController(new Shipment("SMG002"));
+        bookControl =  new BookingController();
         primaryStage.setScene(new Scene (bookControl));
         primaryStage.show();
     }

@@ -1,15 +1,19 @@
 package com.as3mbus.javafxtest;
 
 import java.awt.Desktop;
-import java.io.File;import java.sql.Connection;
+import java.io.File;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;import org.apache.commons.lang3.StringUtils;
+import java.sql.SQLException;
+import java.sql.Statement;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;import com.itextpdf.kernel.pdf.PdfDocument;
+import org.joda.time.format.DateTimeFormatter;
+import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
@@ -103,7 +107,8 @@ public class Shipment {
     }
 
     public Shipment() {
-
+        this.bookingNumber = newID();
+        this.BookingDate = LocalDate.now();
     }
 
     public Shipment(String ID) {
@@ -179,10 +184,11 @@ public class Shipment {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Connected database successfully...");
             System.out.println("Inserting records into the table...");
-            String sql = "INSERT INTO SHIPMENT " + "VALUES (  ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? );";
+            String sql = "INSERT INTO SHIPMENT "
+                    + "VALUES (  ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? );";
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1,this.bookingNumber);
-            stmt.setDate(2,Date.valueOf(this.BookingDate.toString()));
+            stmt.setString(1, this.bookingNumber);
+            stmt.setDate(2, Date.valueOf(this.BookingDate.toString()));
             stmt.setString(3, this.From);
             stmt.setString(4, this.ShipperName);
             stmt.setString(5, this.ShipperAddress);
@@ -191,14 +197,14 @@ public class Shipment {
             stmt.setString(8, this.PlaceOfReceipt);
             stmt.setString(9, this.PortOfLoading);
             stmt.setString(10, this.VesselOrVoyage);
-            stmt.setDate(11,Date.valueOf(this.VesselETD.toString()));
-            stmt.setDate(12,Date.valueOf(this.VesselETA.toString()));
+            stmt.setDate(11, Date.valueOf(this.VesselETD.toString()));
+            stmt.setDate(12, Date.valueOf(this.VesselETA.toString()));
             stmt.setString(13, this.TransShipmentPort);
             stmt.setString(14, this.IntendedVesserlOrVoyage);
-            stmt.setDate(15,Date.valueOf(this.IVesselETA.toString()));
-            stmt.setDate(16,Date.valueOf(this.IVesselETD.toString()));
+            stmt.setDate(15, Date.valueOf(this.IVesselETA.toString()));
+            stmt.setDate(16, Date.valueOf(this.IVesselETD.toString()));
             stmt.setString(17, this.PortOfDischarge);
-            stmt.setDate(18,Date.valueOf(this.DischargeETA.toString()));
+            stmt.setDate(18, Date.valueOf(this.DischargeETA.toString()));
             stmt.setString(19, this.FinalDestination);
             stmt.setString(20, this.CargoSize.toString().toUpperCase());
             stmt.setString(21, this.CargoType.toString().toUpperCase());
@@ -206,8 +212,7 @@ public class Shipment {
             stmt.setString(23, this.Commodity);
             stmt.setString(24, this.Freight.toString().toUpperCase());
             stmt.setString(25, this.StuffingPlace);
-            stmt.setDate(26,Date.valueOf(this.StuffingDate.toString()));
-
+            stmt.setDate(26, Date.valueOf(this.StuffingDate.toString()));
 
             stmt.executeUpdate();
 
@@ -298,6 +303,46 @@ public class Shipment {
                 se.printStackTrace();
             } //end finally try
         } //end try
+    }
+
+    public static String newID() {
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+            Class.forName(JDBC_DRIVER);
+            System.out.println("Connecting to a selected database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected database successfully...");
+            System.out.println("Selecting LatestID");
+            stmt = conn.createStatement();
+            String sql = "SELECT BOOKINGID FROM SHIPMENT WHERE BOOKINGID IN (SELECT max(BOOKINGID)FROM SHIPMENT)";
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next())
+                return rs.getString(1).substring(0, 3)
+                        + String.format("%03d", Integer.parseInt(rs.getString(1).substring(3)) + 1);
+
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try {
+                if (stmt != null)
+                    conn.close();
+            } catch (SQLException se) {
+            } // do nothing
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } //end finally try
+        }
+        return ""; //end try
     }
 
     public void previewFile(String path) {

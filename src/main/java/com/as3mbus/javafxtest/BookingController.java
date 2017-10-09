@@ -8,11 +8,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
-import java.time.LocalDate;
 import java.io.IOException;
 
 public class BookingController extends AnchorPane {
-    Shipment ActiveShipment = new Shipment();
+    Shipment ActiveShipment;
     @FXML
     private Label BookingDateLabel;
     @FXML
@@ -29,6 +28,7 @@ public class BookingController extends AnchorPane {
     private TextArea ConsigneeAddress;
 
     public BookingController() {
+        ActiveShipment = new Shipment();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Booking Information.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -37,10 +37,8 @@ public class BookingController extends AnchorPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        BookingNumberLabel.setText("SMG002");
-        LocalDate Today = LocalDate.now();
-        BookingDateLabel
-                .setText("" + Today.getDayOfMonth() + "/" + Today.getMonth().toString() + "/" + Today.getYear());
+        BookingNumberLabel.setText(ActiveShipment.bookingNumber);
+        BookingDateLabel.setText(Shipment.DateString(org.joda.time.LocalDate.now()));
     }
 
     public BookingController(Shipment Shipment) {
