@@ -16,9 +16,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import javafx.stage.Modality;
 import javafx.scene.Scene;
+import javafx.scene.Node;
 
 /**
  * ShippingController
@@ -37,6 +40,25 @@ public class ShippingController extends AnchorPane {
     @FXML
     private void updateTable(){
         ShipmentTable.setItems(shipmentDatas(FilterField.getText()));
+    }
+    @FXML
+    private void EditShipment(){
+        ShipmentData selected = (ShipmentData) ShipmentTable.getSelectionModel().getSelectedItem();
+        System.out.println(selected.getBookingID());
+        Stage stage = new Stage();
+        stage.setTitle("Edit Shipment "+selected.BookingID);
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+        
+            public void handle(WindowEvent event) {
+                ShippingController mainstage =(ShippingController) ShipmentTable.getScene().getRoot();
+                mainstage.setDisable(false);
+            }
+        });
+        this.getScene().getRoot().setDisable(true);
+        
+        stage.setScene(new Scene(new BookingController(new Shipment(selected.getBookingID()))));
+        stage.show();
+        
     }
 
     public ObservableList<ShipmentData> shipmentDatas(String keyword) {
@@ -97,9 +119,6 @@ public class ShippingController extends AnchorPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        // BookingID.prefWidthProperty().bind(ShipmentTable.widthProperty().multiply(0.2)); // w * 1/4
-        // ShipperColumn.prefWidthProperty().bind(ShipmentTable.widthProperty().multiply(0.4)); // w * 1/4
-        // ConsigneeColumn.prefWidthProperty().bind(ShipmentTable.widthProperty().multiply(0.4)); // w * 1/4
         BookingID.setCellValueFactory(new PropertyValueFactory<ShipmentData, String>("BookingID"));
         ShipperColumn.setCellValueFactory(new PropertyValueFactory<ShipmentData, String>("Shipper"));
         ConsigneeColumn.setCellValueFactory(new PropertyValueFactory<ShipmentData, String>("Consignee"));

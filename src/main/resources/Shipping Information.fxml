@@ -45,12 +45,12 @@
                </columnResizePolicy>
             </TableView>
             <Separator />
-            <HBox spacing="10.0">
+            <HBox onDragDetected="#PrintShipment" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" text="Create" />
+                  <Button mnemonicParsing="false" onAction="#CreateShipment" text="Create" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" text="Edit" />
-                  <Button mnemonicParsing="false" text="Delete" />
+                  <Button mnemonicParsing="false" onAction="#EditShipment" text="Edit" />
+                  <Button mnemonicParsing="false" onAction="#DeleteShipment" text="Delete" />
                   <Button mnemonicParsing="false" text="Print" />
                </children>
             </HBox>
