@@ -37,7 +37,7 @@ public class BookingController extends AnchorPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        BookingNumberLabel.setText(ActiveShipment.bookingNumber);
+        BookingNumberLabel.setText(ActiveShipment.BookingNumber);
         BookingDateLabel.setText(Shipment.DateString(org.joda.time.LocalDate.now()));
     }
 
@@ -48,7 +48,7 @@ public class BookingController extends AnchorPane {
 
     public void LoadShipment(Shipment shipping) {
         ActiveShipment = shipping;
-        BookingNumberLabel.setText(shipping.bookingNumber);
+        BookingNumberLabel.setText(shipping.BookingNumber);
         try {
             BookingDateLabel.setText(Shipment.DateString(shipping.BookingDate));
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class BookingController extends AnchorPane {
     }
 
     public void SaveShipment(Shipment shipment) {
-        shipment.bookingNumber = BookingNumberLabel.getText();
+        shipment.BookingNumber = BookingNumberLabel.getText();
         shipment.BookingDate = Shipment.parseDateString(BookingDateLabel.getText());
         shipment.From = FromField.getText();
         shipment.ShipperName = ShipperName.getText();

@@ -9,15 +9,14 @@ import javafx.stage.Stage;
  *
  */
 public class App extends Application {
-    BookingController bookControl;
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        bookControl =  new BookingController();
-        primaryStage.setScene(new Scene (bookControl));
+        // ShippingController shippControl =  new ShippingController();
+        primaryStage.setScene(new Scene (new ShippingController()));
         primaryStage.show();
     }
 }

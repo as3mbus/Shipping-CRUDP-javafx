@@ -26,7 +26,7 @@ import com.itextpdf.layout.property.TextAlignment;
  * Shipment
  */
 public class Shipment {
-    public String bookingNumber, From, ShipperName, ShipperAddress, ConsigneeName, ConsigneeAddress, PlaceOfReceipt,
+    public String BookingNumber, From, ShipperName, ShipperAddress, ConsigneeName, ConsigneeAddress, PlaceOfReceipt,
             PortOfLoading, VesselOrVoyage, TransShipmentPort, IntendedVesserlOrVoyage, PortOfDischarge,
             FinalDestination, Commodity, StuffingPlace;
     public int VolumeCont;
@@ -67,12 +67,12 @@ public class Shipment {
     Freight Freight;
 
     public String BookingInformation() {
-        return (this.bookingNumber + "\n" + this.BookingDate + "\n" + this.From + "\n" + this.ShipperName + "\n"
+        return (this.BookingNumber + "\n" + this.BookingDate + "\n" + this.From + "\n" + this.ShipperName + "\n"
                 + this.ShipperAddress + "\n" + this.ConsigneeName + "\n" + this.ConsigneeAddress);
     }
 
     public String toString() {
-        return "Booking Number : " + this.bookingNumber + "\n" + "Booking Date : " + this.BookingDate + "\n" + "From : "
+        return "Booking Number : " + this.BookingNumber + "\n" + "Booking Date : " + this.BookingDate + "\n" + "From : "
                 + this.From + "\n" + "Shipper Name : " + this.ShipperName + "\n" + "Shipper Address : "
                 + this.ShipperAddress + "\n" + "Consignee Name : " + this.ConsigneeName + "\n" + "Consignee Address : "
                 + this.ConsigneeAddress + "\n" + "Place Of Receipt : " + this.PlaceOfReceipt + "\n"
@@ -107,7 +107,7 @@ public class Shipment {
     }
 
     public Shipment() {
-        this.bookingNumber = newID();
+        this.BookingNumber = newID();
         this.BookingDate = LocalDate.now();
     }
 
@@ -134,7 +134,7 @@ public class Shipment {
             Table table = new Table(4);
             Cell cell = new Cell(2, 2).add("Shipper : \n\t" + ShipperName + "\n\t" + ShipperAddress);
             table.addCell(cell);
-            cell = new Cell(1, 2).add("Booking Number : " + bookingNumber);
+            cell = new Cell(1, 2).add("Booking Number : " + BookingNumber);
             table.addCell(cell);
             cell = new Cell(3, 2).add("Logo Here");
             table.addCell(cell);
@@ -187,7 +187,7 @@ public class Shipment {
             String sql = "INSERT INTO SHIPMENT "
                     + "VALUES (  ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? );";
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, this.bookingNumber);
+            stmt.setString(1, this.BookingNumber);
             stmt.setDate(2, Date.valueOf(this.BookingDate.toString()));
             stmt.setString(3, this.From);
             stmt.setString(4, this.ShipperName);
@@ -255,7 +255,7 @@ public class Shipment {
             stmt.setString(1, ID);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                this.bookingNumber = rs.getString(1);
+                this.BookingNumber = rs.getString(1);
                 this.BookingDate = LocalDate.fromDateFields(rs.getDate(2));
                 this.From = rs.getString(3);
                 this.ShipperName = rs.getString(4);
