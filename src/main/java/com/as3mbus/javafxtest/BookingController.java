@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import java.io.IOException;
 
+import org.h2.command.dml.Insert;
+
 public class BookingController extends AnchorPane {
     Shipment ActiveShipment;
     @FXML
@@ -26,6 +28,7 @@ public class BookingController extends AnchorPane {
     private TextField ConsigneeName;
     @FXML
     private TextArea ConsigneeAddress;
+    boolean Insert = true;
 
     public BookingController() {
         ActiveShipment = new Shipment();
@@ -37,6 +40,7 @@ public class BookingController extends AnchorPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        Insert = true;
         BookingNumberLabel.setText(ActiveShipment.BookingNumber);
         BookingDateLabel.setText(Shipment.DateString(org.joda.time.LocalDate.now()));
     }
@@ -44,6 +48,12 @@ public class BookingController extends AnchorPane {
     public BookingController(Shipment Shipment) {
         this();
         LoadShipment(Shipment);
+        Insert= false;
+    }
+    public BookingController(Shipment Shipment, boolean insert) {
+        this();
+        LoadShipment(Shipment);
+        Insert= insert;
     }
 
     public void LoadShipment(Shipment shipping) {
@@ -77,7 +87,7 @@ public class BookingController extends AnchorPane {
     private void nextPage() {
         SaveShipment(ActiveShipment);
         Stage stage = (Stage) this.getScene().getWindow();
-        RouteController route = new RouteController(ActiveShipment);
+        RouteController route = new RouteController(ActiveShipment,Insert);
         stage.setScene(new Scene(route));
 
     }

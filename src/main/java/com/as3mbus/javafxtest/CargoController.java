@@ -4,6 +4,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Toggle;
@@ -22,7 +23,7 @@ import com.as3mbus.javafxtest.Shipment.CargoSize;
 import com.as3mbus.javafxtest.Shipment.CargoType;
 
 public class CargoController extends AnchorPane {
-    public Shipment ActiveShipment = new Shipment();
+    public Shipment ActiveShipment;
     @FXML
     private ToggleGroup size;
     @FXML
@@ -37,6 +38,7 @@ public class CargoController extends AnchorPane {
     private TextField StuffingPlaceField;
     @FXML
     private DatePicker StuffingDatePicker;
+    boolean Insert = true;
 
     public CargoController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Cargo Trucking Information.fxml"));
@@ -53,6 +55,11 @@ public class CargoController extends AnchorPane {
     public CargoController(Shipment shipment) {
         this();
         loadShipment(shipment);
+    }
+
+    public CargoController(Shipment shipment, boolean insert) {
+        this(shipment);
+        Insert = insert;
     }
 
     public void saveShipment(Shipment shipment) {
@@ -85,7 +92,7 @@ public class CargoController extends AnchorPane {
             //TODO: handle exception
         }
         System.out.println(shipment.toString());
-        
+
     }
 
     public void loadShipment(Shipment shipment) {
@@ -136,14 +143,25 @@ public class CargoController extends AnchorPane {
     private void prevPage() {
         saveShipment(ActiveShipment);
         Stage stage = (Stage) this.getScene().getWindow();
-        stage.setScene(new Scene(new RouteController(ActiveShipment)));
+        stage.setScene(new Scene(new RouteController(ActiveShipment,Insert)));
     }
 
     @FXML
     private void Done() {
         saveShipment(ActiveShipment);
         // ActiveShipment.printIText();
-        ActiveShipment.insertDatabase();
+        if (Insert)
+            ActiveShipment.insertDatabase();
+        else 
+            ActiveShipment.updateDatabase();
+        Stage s = (Stage) this.getScene().getWindow();
+        s.getOnCloseRequest().handle(
+            new WindowEvent(
+                s,
+                WindowEvent.WINDOW_CLOSE_REQUEST
+            )
+        );
+        s.close();
     }
 
     public static String getSelectedRadioText(ToggleGroup group) {

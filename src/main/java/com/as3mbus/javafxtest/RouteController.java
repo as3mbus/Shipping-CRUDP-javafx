@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import javafx.scene.control.DatePicker;
 
 public class RouteController extends AnchorPane {
-    Shipment ActiveShipment = new Shipment();
+    Shipment ActiveShipment;
     @FXML
     TextField PoReceiptField;
     @FXML
@@ -36,6 +36,7 @@ public class RouteController extends AnchorPane {
     private DatePicker PoDischargeETA;
     @FXML
     TextField FinalDestinationField;
+    boolean Insert = true;
 
     public RouteController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Route Information.fxml"));
@@ -52,6 +53,11 @@ public class RouteController extends AnchorPane {
     public RouteController(Shipment shipment) {
         this();
         LoadShipment(shipment);
+    }
+    
+    public RouteController(Shipment shipment,boolean insert){
+        this(shipment);
+        Insert = insert;
     }
 
     public void saveShipment(Shipment shipment) {
@@ -119,7 +125,7 @@ public class RouteController extends AnchorPane {
     private void nextPage() {
         saveShipment(ActiveShipment);
         Stage stage = (Stage) this.getScene().getWindow();
-        stage.setScene(new Scene(new CargoController(ActiveShipment)));
+        stage.setScene(new Scene(new CargoController(ActiveShipment,Insert)));
 
     }
 
@@ -127,7 +133,7 @@ public class RouteController extends AnchorPane {
     private void prevPage() {
         saveShipment(ActiveShipment);
         Stage stage = (Stage) this.getScene().getWindow();
-        stage.setScene(new Scene(new BookingController(ActiveShipment)));
+        stage.setScene(new Scene(new BookingController(ActiveShipment,Insert)));
 
     }
 }

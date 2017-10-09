@@ -241,6 +241,77 @@ public class Shipment {
 
     }
 
+    public void updateDatabase() {
+        // UPDATE TEST SET NAME='Hi' WHERE ID=1;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            Class.forName(JDBC_DRIVER);
+            System.out.println("Connecting to a selected database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected database successfully...");
+            System.out.println("Updating records into the table...");
+            String sql = "UPDATE SHIPMENT SET" + " BOOKINGFROM= ?," + " SHIPPERNAME= ?," + " SHIPPERADDRESS= ?,"
+                    + " CONSIGNEENAME= ?," + " CONSIGNEEADDRESS= ?," + " PLACEOFRECEIPT= ?," + " PORTOFLOADING= ?,"
+                    + " VESSELORVOYAGE= ?," + " VESSELETD= ?," + " VESSELETA= ?," + " TRANSSHIPMENTPORT= ?,"
+                    + " IVESSELORVOYAGE= ?," + " IVESSELETA= ?," + " IVESSELETD= ?," + " PORTOFDISCHARGE= ?,"
+                    + " DISCHARGEETA= ?," + " FINALDESTINATION= ?," + " CARGOSIZE= ?," + " CARGOTYPE= ?," + " VOLUMECONT= ?,"
+                    + " COMMODITY= ?," + " FREIGHT= ?," + " STUFFINGPLACE= ?," + " STUFFINGDATE= ?" +" WHERE BOOKINGID= ?" + ";";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, this.From);
+            stmt.setString(2, this.ShipperName);
+            stmt.setString(3, this.ShipperAddress);
+            stmt.setString(4, this.ConsigneeName);
+            stmt.setString(5, this.ConsigneeAddress);
+            stmt.setString(6, this.PlaceOfReceipt);
+            stmt.setString(7, this.PortOfLoading);
+            stmt.setString(8, this.VesselOrVoyage);
+            stmt.setDate(9, Date.valueOf(this.VesselETD.toString()));
+            stmt.setDate(10, Date.valueOf(this.VesselETA.toString()));
+            stmt.setString(11, this.TransShipmentPort);
+            stmt.setString(12, this.IntendedVesserlOrVoyage);
+            stmt.setDate(13, Date.valueOf(this.IVesselETA.toString()));
+            stmt.setDate(14, Date.valueOf(this.IVesselETD.toString()));
+            stmt.setString(15, this.PortOfDischarge);
+            stmt.setDate(16, Date.valueOf(this.DischargeETA.toString()));
+            stmt.setString(17, this.FinalDestination);
+            stmt.setString(18, this.CargoSize.toString().toUpperCase());
+            stmt.setString(19, this.CargoType.toString().toUpperCase());
+            stmt.setInt(20, this.VolumeCont);
+            stmt.setString(21, this.Commodity);
+            stmt.setString(22, this.Freight.toString().toUpperCase());
+            stmt.setString(23, this.StuffingPlace);
+            stmt.setDate(24, Date.valueOf(this.StuffingDate.toString()));
+            stmt.setString(25, this.BookingNumber);
+            
+            stmt.executeUpdate();
+
+            System.out.println("Updated records into the table...");
+
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try {
+                if (stmt != null)
+                    conn.close();
+            } catch (SQLException se) {
+            } // do nothing
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } //end finally try
+        } //end try
+
+    }
+
     public void selectIDDatabase(String ID) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -250,7 +321,7 @@ public class Shipment {
             System.out.println("Connecting to a selected database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Connected database successfully...");
-            System.out.println("Inserting records into the table...");
+            System.out.println("Selecting records into the table...");
             stmt = conn.prepareStatement("SELECT * FROM SHIPMENT WHERE BOOKINGID = ?");
             stmt.setString(1, ID);
             ResultSet rs = stmt.executeQuery();

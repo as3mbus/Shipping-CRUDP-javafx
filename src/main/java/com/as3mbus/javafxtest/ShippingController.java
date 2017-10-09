@@ -52,13 +52,43 @@ public class ShippingController extends AnchorPane {
             public void handle(WindowEvent event) {
                 ShippingController mainstage =(ShippingController) ShipmentTable.getScene().getRoot();
                 mainstage.setDisable(false);
+                FilterField.setText("");
+                updateTable();
             }
         });
         this.getScene().getRoot().setDisable(true);
         
-        stage.setScene(new Scene(new BookingController(new Shipment(selected.getBookingID()))));
+        stage.setScene(new Scene(new BookingController(new Shipment(selected.getBookingID()),false)));
         stage.show();
         
+    }
+    @FXML
+    private void CreateShipment(){
+    
+        Stage stage = new Stage();
+        stage.setTitle("New Shipment");
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+        
+            public void handle(WindowEvent event) {
+                ShippingController mainstage =(ShippingController) ShipmentTable.getScene().getRoot();
+                mainstage.setDisable(false);
+                FilterField.setText("");
+                updateTable();
+            }
+        });
+        this.getScene().getRoot().setDisable(true);
+        
+        stage.setScene(new Scene(new BookingController()));
+        stage.show();
+        
+    }
+    @FXML
+    private void DeleteShipment(){
+        
+    }
+    @FXML
+    private void PrintShipment(){
+
     }
 
     public ObservableList<ShipmentData> shipmentDatas(String keyword) {
@@ -76,7 +106,7 @@ public class ShippingController extends AnchorPane {
             System.out.println("Connecting to a selected database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Connected database successfully...");
-            System.out.println("Inserting records into the table...");
+            System.out.println("Retrieving records into the table...");
             stmt = conn.prepareStatement("SELECT BOOKINGID, SHIPPERNAME, CONSIGNEENAME FROM SHIPMENT WHERE UPPER(BOOKINGID) LIKE UPPER(?) OR UPPER(SHIPPERNAME) LIKE UPPER(?) OR UPPER(CONSIGNEENAME) LIKE UPPER(?);");
             stmt.setString(1, "%"+keyword+"%");
             stmt.setString(2, "%"+keyword+"%");
