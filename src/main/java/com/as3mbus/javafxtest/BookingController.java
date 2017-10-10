@@ -32,6 +32,8 @@ public class BookingController extends AnchorPane {
 
     public BookingController() {
         ActiveShipment = new Shipment();
+
+        //basic loading for fxml custom controller
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Booking Information.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -40,6 +42,7 @@ public class BookingController extends AnchorPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
         Insert = true;
         BookingNumberLabel.setText(ActiveShipment.BookingNumber);
         BookingDateLabel.setText(Shipment.DateString(org.joda.time.LocalDate.now()));
@@ -86,9 +89,12 @@ public class BookingController extends AnchorPane {
     @FXML
     private void nextPage() {
         SaveShipment(ActiveShipment);
+
+        //calling another scene controller and place it as new scene  
         Stage stage = (Stage) this.getScene().getWindow();
         RouteController route = new RouteController(ActiveShipment,Insert);
         stage.setScene(new Scene(route));
+        stage.centerOnScreen();
 
     }
 }

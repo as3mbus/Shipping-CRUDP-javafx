@@ -43,10 +43,16 @@ public class ShippingController extends AnchorPane {
     }
     @FXML
     private void EditShipment(){
+
+        //get selected row
         ShipmentData selected = (ShipmentData) ShipmentTable.getSelectionModel().getSelectedItem();
         System.out.println(selected.getBookingID());
+        
+        //create new stage
         Stage stage = new Stage();
         stage.setTitle("Edit Shipment "+selected.BookingID);
+
+        //add listener for stage closing signal (window close)
         stage.setOnCloseRequest(new EventHandler<WindowEvent>(){
         
             public void handle(WindowEvent event) {
@@ -56,15 +62,17 @@ public class ShippingController extends AnchorPane {
                 updateTable();
             }
         });
+        //disabling UI through root instead of scene
         this.getScene().getRoot().setDisable(true);
         
+        //fill new stage with new scene from controller
         stage.setScene(new Scene(new BookingController(new Shipment(selected.getBookingID()),false)));
         stage.show();
         
     }
+    //different calling method for UI controller
     @FXML
     private void CreateShipment(){
-    
         Stage stage = new Stage();
         stage.setTitle("New Shipment");
         stage.setOnCloseRequest(new EventHandler<WindowEvent>(){
@@ -82,6 +90,7 @@ public class ShippingController extends AnchorPane {
         stage.show();
         
     }
+    //delete selected cell by ID
     @FXML
     private void DeleteShipment(){
         ShipmentData selected = (ShipmentData) ShipmentTable.getSelectionModel().getSelectedItem();
@@ -89,13 +98,15 @@ public class ShippingController extends AnchorPane {
         FilterField.setText("");
         updateTable();
     }
+    //print selected cell by loading the data and then print it
     @FXML
     private void PrintShipment(){
         ShipmentData selected = (ShipmentData) ShipmentTable.getSelectionModel().getSelectedItem();
         new Shipment(selected.getBookingID()).printIText();
         
     }
-
+    //loading data from database and converting it to observable list that could be readen by java fx table view items
+    //with filters
     public ObservableList<ShipmentData> shipmentDatas(String keyword) {
         final String JDBC_DRIVER = "org.h2.Driver";
         final String DB_URL = "jdbc:h2:tcp://localhost/~/seaport";
@@ -112,6 +123,7 @@ public class ShippingController extends AnchorPane {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Connected database successfully...");
             System.out.println("Retrieving records into the table...");
+            //filterring sql using LIKE queries
             stmt = conn.prepareStatement("SELECT BOOKINGID, SHIPPERNAME, CONSIGNEENAME FROM SHIPMENT WHERE UPPER(BOOKINGID) LIKE UPPER(?) OR UPPER(SHIPPERNAME) LIKE UPPER(?) OR UPPER(CONSIGNEENAME) LIKE UPPER(?);");
             stmt.setString(1, "%"+keyword+"%");
             stmt.setString(2, "%"+keyword+"%");
@@ -154,12 +166,14 @@ public class ShippingController extends AnchorPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        //setting cell value contrctor using value factory (reading example)
         BookingID.setCellValueFactory(new PropertyValueFactory<ShipmentData, String>("BookingID"));
         ShipperColumn.setCellValueFactory(new PropertyValueFactory<ShipmentData, String>("Shipper"));
         ConsigneeColumn.setCellValueFactory(new PropertyValueFactory<ShipmentData, String>("Consignee"));
         ShipmentTable.setItems(shipmentDatas(""));
     }
 
+    //example class for value factory
     public static class ShipmentData {
 
         private final SimpleStringProperty BookingID;

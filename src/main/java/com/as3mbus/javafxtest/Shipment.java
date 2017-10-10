@@ -31,7 +31,8 @@ public class Shipment {
             FinalDestination, Commodity, StuffingPlace;
     public int VolumeCont;
     public LocalDate BookingDate, VesselETD, VesselETA, IVesselETD, IVesselETA, DischargeETA, StuffingDate;
-
+    
+    // Database Information
     static final String JDBC_DRIVER = "org.h2.Driver";
     static final String DB_URL = "jdbc:h2:tcp://localhost/~/seaport";
 
@@ -39,6 +40,7 @@ public class Shipment {
     static final String USER = "sa";
     static final String PASS = "";
 
+    //creating enum with value since it hav number value for it
     public static enum CargoSize {
         Twenty("20'"), Forty("40'");
         public final String name;
@@ -88,6 +90,7 @@ public class Shipment {
                 + this.StuffingDate;
     }
 
+    //parsing date information to beautify looks
     public static LocalDate parseDateString(String s) {
         final DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MMMMM/yyyy");
         final LocalDate dt = dtf.parseLocalDate(s);
@@ -106,11 +109,13 @@ public class Shipment {
         return s;
     }
 
+    //creating new shipment with new id and set time to date created (date excuted)
     public Shipment() {
         this.BookingNumber = newID();
         this.BookingDate = LocalDate.now();
     }
 
+    //loading shipment in database with certain string ID
     public Shipment(String ID) {
         selectIDDatabase(ID);
     }
@@ -119,6 +124,7 @@ public class Shipment {
 
     }
 
+    //outputting shipment data as pdf file using itext library
     public void printIText() {
         try {
 
@@ -174,6 +180,7 @@ public class Shipment {
 
     }
 
+    // inserting data into database
     public void insertDatabase() {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -241,6 +248,7 @@ public class Shipment {
 
     }
 
+    // updating data into database
     public void updateDatabase() {
         // UPDATE TEST SET NAME='Hi' WHERE ID=1;
         Connection conn = null;
@@ -313,6 +321,7 @@ public class Shipment {
 
     }
 
+    //selecting shipment from database based by ID
     public void selectIDDatabase(String ID) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -377,6 +386,7 @@ public class Shipment {
         } //end try
     }
 
+    //creating new ID based on database date and Highest ID
     public static String newID() {
         Connection conn = null;
         Statement stmt = null;
@@ -417,42 +427,11 @@ public class Shipment {
         return ""; //end try
     }
 
+    //remove data from database by shipment data object ID
     public static void removeShipment(Shipment shipm) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
-        try {
-            Class.forName(JDBC_DRIVER);
-            System.out.println("Connecting to a selected database...");
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            System.out.println("Connected database successfully...");
-            System.out.println("Deleting Data");
-            String sql = "DELETE FROM SHIPMENT WHERE BOOKINGID= ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, shipm.BookingNumber);
-            stmt.executeUpdate();
-
-        } catch (SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (stmt != null)
-                    conn.close();
-            } catch (SQLException se) {
-            } // do nothing
-            try {
-                if (conn != null)
-                    conn.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            } //end finally try
-        }
+        removeShipment(shipm.BookingNumber);
     }
+    // remove data from database by ID
     public static void removeShipment(String ID) {
         Connection conn = null;
         PreparedStatement stmt = null;

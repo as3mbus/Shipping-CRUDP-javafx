@@ -9,6 +9,8 @@ import javafx.stage.Stage;
  *
  */
 public class App extends Application {
+
+    //basic java fx launch argument using custom controller for fxml
     public static void main(String[] args) {
         launch(args);
     }
