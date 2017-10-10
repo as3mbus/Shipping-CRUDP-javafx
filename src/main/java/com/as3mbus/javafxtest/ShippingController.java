@@ -19,9 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.stage.Modality;
 import javafx.scene.Scene;
-import javafx.scene.Node;
 
 /**
  * ShippingController

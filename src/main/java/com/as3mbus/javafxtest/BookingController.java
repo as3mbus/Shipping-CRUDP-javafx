@@ -10,8 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import java.io.IOException;
 
-import org.h2.command.dml.Insert;
-
 public class BookingController extends AnchorPane {
     Shipment ActiveShipment;
     @FXML

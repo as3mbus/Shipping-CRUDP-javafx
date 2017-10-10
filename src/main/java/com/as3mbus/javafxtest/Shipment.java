@@ -1,7 +1,9 @@
 package com.as3mbus.javafxtest;
 
+
 import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -12,8 +14,7 @@ import java.sql.Statement;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import com.itextpdf.kernel.pdf.PdfDocument;
+import org.joda.time.format.DateTimeFormatter;import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
@@ -21,6 +22,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.TextAlignment;
+
 
 /**
  * Shipment
@@ -31,7 +33,7 @@ public class Shipment {
             FinalDestination, Commodity, StuffingPlace;
     public int VolumeCont;
     public LocalDate BookingDate, VesselETD, VesselETA, IVesselETD, IVesselETA, DischargeETA, StuffingDate;
-    
+
     // Database Information
     static final String JDBC_DRIVER = "org.h2.Driver";
     static final String DB_URL = "jdbc:h2:tcp://localhost/~/seaport";
@@ -137,7 +139,7 @@ public class Shipment {
             doc.setTextAlignment(TextAlignment.CENTER);
             doc.add(new Paragraph().add(new Text("Shipping Instruction").setFontSize(28)));
             doc.setTextAlignment(TextAlignment.JUSTIFIED);
-            Table table = new Table(4);
+            Table table = new Table( 4 );
             Cell cell = new Cell(2, 2).add("Shipper : \n\t" + ShipperName + "\n\t" + ShipperAddress);
             table.addCell(cell);
             cell = new Cell(1, 2).add("Booking Number : " + BookingNumber);
@@ -164,7 +166,7 @@ public class Shipment {
             table.addCell(cell);
             cell = new Cell().add("Final Destination : \n\t" + FinalDestination);
             table.addCell(cell);
-            cell = new Cell(1, 4).add("Commodity : \n\t" + Commodity + "\n" + VolumeCont + " x " + CargoSize + " "
+            cell = new Cell(1, 4).add("Commodity : \n\t" + Commodity + "\n" + VolumeCont + " x " + CargoSize.name + " "
                     + CargoType + "\n *** Freight " + Freight + " ***");
             table.addCell(cell);
             cell = new Cell(1, 4).add("Stuffing Place : \n\t" + StuffingPlace);
@@ -173,6 +175,7 @@ public class Shipment {
             table.addCell(cell);
             doc.add(table);
             doc.close();
+            previewFile(temp.getAbsolutePath());
 
         } catch (Exception e) {
             //TODO: handle exception
@@ -431,6 +434,7 @@ public class Shipment {
     public static void removeShipment(Shipment shipm) {
         removeShipment(shipm.BookingNumber);
     }
+
     // remove data from database by ID
     public static void removeShipment(String ID) {
         Connection conn = null;
@@ -470,26 +474,30 @@ public class Shipment {
     }
 
     public void previewFile(String path) {
-        try {
-
-            File pdfFile = new File(path);
-            if (pdfFile.exists()) {
-
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().open(pdfFile);
-                } else {
-                    System.out.println("Awt Desktop is not supported!");
-                }
-
-            } else {
-                System.out.println("File is not exists!");
-            }
-
-            System.out.println("Done");
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (Desktop.isDesktopSupported()) {
+            Thread a = new Thread(new openFile(path));
+            a.start();
         }
 
     }
+    private static class openFile implements Runnable{
+        String path;
+        public openFile(String path){
+            this.path = path;
+        }
+        public void run() {
+            {
+                File file = new File(path);
+                System.out.println(path);
+                    try {
+                        Desktop.getDesktop().open(file);;
+                    } catch (IOException el) {
+                        el.printStackTrace();
+                    }
+                
+            }
+        }
+    }
+
+    
 }
