@@ -122,7 +122,7 @@ public class Shipment {
     public void printIText() {
         try {
 
-            File temp = File.createTempFile("tester", ".pdf");
+            File temp = File.createTempFile(this.BookingNumber, ".pdf");
             temp.getParentFile().mkdirs();
             System.out.println(temp.getAbsolutePath());
             PdfDocument pdfDoc = new PdfDocument(new PdfWriter(temp.getAbsolutePath()));
@@ -256,8 +256,9 @@ public class Shipment {
                     + " CONSIGNEENAME= ?," + " CONSIGNEEADDRESS= ?," + " PLACEOFRECEIPT= ?," + " PORTOFLOADING= ?,"
                     + " VESSELORVOYAGE= ?," + " VESSELETD= ?," + " VESSELETA= ?," + " TRANSSHIPMENTPORT= ?,"
                     + " IVESSELORVOYAGE= ?," + " IVESSELETA= ?," + " IVESSELETD= ?," + " PORTOFDISCHARGE= ?,"
-                    + " DISCHARGEETA= ?," + " FINALDESTINATION= ?," + " CARGOSIZE= ?," + " CARGOTYPE= ?," + " VOLUMECONT= ?,"
-                    + " COMMODITY= ?," + " FREIGHT= ?," + " STUFFINGPLACE= ?," + " STUFFINGDATE= ?" +" WHERE BOOKINGID= ?" + ";";
+                    + " DISCHARGEETA= ?," + " FINALDESTINATION= ?," + " CARGOSIZE= ?," + " CARGOTYPE= ?,"
+                    + " VOLUMECONT= ?," + " COMMODITY= ?," + " FREIGHT= ?," + " STUFFINGPLACE= ?," + " STUFFINGDATE= ?"
+                    + " WHERE BOOKINGID= ?" + ";";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, this.From);
             stmt.setString(2, this.ShipperName);
@@ -284,7 +285,7 @@ public class Shipment {
             stmt.setString(23, this.StuffingPlace);
             stmt.setDate(24, Date.valueOf(this.StuffingDate.toString()));
             stmt.setString(25, this.BookingNumber);
-            
+
             stmt.executeUpdate();
 
             System.out.println("Updated records into the table...");
@@ -414,6 +415,79 @@ public class Shipment {
             } //end finally try
         }
         return ""; //end try
+    }
+
+    public static void removeShipment(Shipment shipm) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            Class.forName(JDBC_DRIVER);
+            System.out.println("Connecting to a selected database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected database successfully...");
+            System.out.println("Deleting Data");
+            String sql = "DELETE FROM SHIPMENT WHERE BOOKINGID= ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, shipm.BookingNumber);
+            stmt.executeUpdate();
+
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try {
+                if (stmt != null)
+                    conn.close();
+            } catch (SQLException se) {
+            } // do nothing
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } //end finally try
+        }
+    }
+    public static void removeShipment(String ID) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            Class.forName(JDBC_DRIVER);
+            System.out.println("Connecting to a selected database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected database successfully...");
+            System.out.println("Removing Data");
+            String sql = "DELETE FROM SHIPMENT WHERE BOOKINGID= ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, ID);
+            stmt.executeUpdate();
+
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try {
+                if (stmt != null)
+                    conn.close();
+            } catch (SQLException se) {
+            } // do nothing
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } //end finally try
+        }
     }
 
     public void previewFile(String path) {

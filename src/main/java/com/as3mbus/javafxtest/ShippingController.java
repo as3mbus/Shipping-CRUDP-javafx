@@ -84,11 +84,16 @@ public class ShippingController extends AnchorPane {
     }
     @FXML
     private void DeleteShipment(){
-        
+        ShipmentData selected = (ShipmentData) ShipmentTable.getSelectionModel().getSelectedItem();
+        Shipment.removeShipment(selected.getBookingID());
+        FilterField.setText("");
+        updateTable();
     }
     @FXML
     private void PrintShipment(){
-
+        ShipmentData selected = (ShipmentData) ShipmentTable.getSelectionModel().getSelectedItem();
+        new Shipment(selected.getBookingID()).printIText();
+        
     }
 
     public ObservableList<ShipmentData> shipmentDatas(String keyword) {

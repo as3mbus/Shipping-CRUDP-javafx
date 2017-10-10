@@ -51,7 +51,7 @@
                   <Region HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#EditShipment" text="Edit" />
                   <Button mnemonicParsing="false" onAction="#DeleteShipment" text="Delete" />
-                  <Button mnemonicParsing="false" text="Print" />
+                  <Button mnemonicParsing="false" onAction="#PrintShipment" text="Print" />
                </children>
             </HBox>
          </children>
