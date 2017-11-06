@@ -1,6 +1,5 @@
 package com.as3mbus.javafxtest;
 
-
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -14,15 +13,19 @@ import java.sql.Statement;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;import com.itextpdf.kernel.pdf.PdfDocument;
+import org.joda.time.format.DateTimeFormatter;
+
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
-
 
 /**
  * Shipment
@@ -135,16 +138,18 @@ public class Shipment {
             System.out.println(temp.getAbsolutePath());
             PdfDocument pdfDoc = new PdfDocument(new PdfWriter(temp.getAbsolutePath()));
             Document doc = new Document(pdfDoc);
-
+            Image logo = new Image(ImageDataFactory.create(getClass().getResource("/TEKNIK.jpg")));
+            logo.scale(0.3f, 0.3f);
+            logo.setHorizontalAlignment(HorizontalAlignment.CENTER);
             doc.setTextAlignment(TextAlignment.CENTER);
             doc.add(new Paragraph().add(new Text("Shipping Instruction").setFontSize(28)));
             doc.setTextAlignment(TextAlignment.JUSTIFIED);
-            Table table = new Table( 4 );
+            Table table = new Table(4);
             Cell cell = new Cell(2, 2).add("Shipper : \n\t" + ShipperName + "\n\t" + ShipperAddress);
             table.addCell(cell);
             cell = new Cell(1, 2).add("Booking Number : " + BookingNumber);
             table.addCell(cell);
-            cell = new Cell(3, 2).add("Logo Here");
+            cell = new Cell(3, 2).add(logo);
             table.addCell(cell);
             cell = new Cell(1, 2).add("Consignee : \n\t" + ConsigneeName + "\n\t" + ConsigneeAddress);
             table.addCell(cell);
@@ -480,24 +485,27 @@ public class Shipment {
         }
 
     }
-    private static class openFile implements Runnable{
+
+    private static class openFile implements Runnable {
         String path;
-        public openFile(String path){
+
+        public openFile(String path) {
             this.path = path;
         }
+
         public void run() {
             {
                 File file = new File(path);
                 System.out.println(path);
-                    try {
-                        Desktop.getDesktop().open(file);;
-                    } catch (IOException el) {
-                        el.printStackTrace();
-                    }
-                
+                try {
+                    Desktop.getDesktop().open(file);
+                    ;
+                } catch (IOException el) {
+                    el.printStackTrace();
+                }
+
             }
         }
     }
 
-    
 }
